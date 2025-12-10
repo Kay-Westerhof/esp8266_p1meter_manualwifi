@@ -615,14 +615,57 @@ void setup()
 
     // * Fetches SSID and pass and tries to connect
     // * Reset when no connection after 10 seconds
+    #if USE_SPECIFIC_BSSID == true
+    // * Try to connect using specific BSSID first
+    Serial.println(F("Attempting connection to specific BSSID... "));
+    
+    // * Get stored credentials from WiFiManager
+    String savedSSID = WiFi.SSID();
+    String savedPass = WiFi.psk();
+    
+    if (savedSSID.length() > 0) {
+        uint8_t bssid[] = TARGET_BSSID;
+        Serial.printf("Connecting to SSID: %s with BSSID: %02X:%02X:%02X:%02X:%02X:%02X\n", 
+                      savedSSID.c_str(), bssid[0], bssid[1], bssid[2], bssid[3], bssid[4], bssid[5]);
+        
+        WiFi.begin(savedSSID. c_str(), savedPass.c_str(), WIFI_CHANNEL, bssid, true);
+        
+        int attempts = 0;
+        while (WiFi.status() != WL_CONNECTED && attempts < 40) {
+            delay(500);
+            Serial.print(".");
+            attempts++;
+        }
+        Serial.println();
+        
+        if (WiFi.status() == WL_CONNECTED) {
+            Serial.println(F("Connected to specific BSSID! "));
+            Serial. print(F("IP address: "));
+            Serial.println(WiFi.localIP());
+        }
+    }
+    
+    // * Fall back to WiFiManager if BSSID connection failed
+    if (WiFi.status() != WL_CONNECTED) {
+        Serial.println(F("BSSID connection failed, falling back to WiFiManager... "));
+        if (! wifiManager.autoConnect())
+        {
+            Serial. println(F("Failed to connect to WIFI and hit timeout"));
+            ESP.reset();
+            delay(WIFI_TIMEOUT);
+        }
+    }
+    #else
+    // * Standard WiFiManager connection
     if (!wifiManager.autoConnect())
     {
         Serial.println(F("Failed to connect to WIFI and hit timeout"));
 
         // * Reset and try again, or maybe put it to deep sleep
-        ESP.reset();
+        ESP. reset();
         delay(WIFI_TIMEOUT);
     }
+    #endif
 
     // * Read updated parameters
     strcpy(MQTT_HOST, CUSTOM_MQTT_HOST.getValue());

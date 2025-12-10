@@ -76,3 +76,9 @@ long SHORT_POWER_PEAKS;
 
 // * Set during CRC checking
 unsigned int currentCRC = 0;
+
+#define USE_SPECIFIC_BSSID true
+#define TARGET_BSSID {0x00, 0x00, 0x00, 0x00, 0x00, 0x00} // * Replace with your AP's BSSID
+
+// * Optional:  Specify WiFi channel (0 = auto, or 1-13 for specific channel)
+#define WIFI_CHANNEL 0
