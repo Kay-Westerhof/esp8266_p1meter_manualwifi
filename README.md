@@ -2,6 +2,9 @@
 
 Software for the ESP2866 that sends P1 smart meter data to an mqtt broker (with OTA firmware updates)
 
+## Setup wifi settings
+To specify which access point you want to use, change the bssid in settings.h to the bssid of your access point. Make sure USE_SPECIFIC_BSSID is set to true, otherwise the setting will not have any effect. 
+
 ## about this fork
 This fork (tries) to add support for the `Landys and Gyr E360` smartmeter (DSMR5.0)
 
