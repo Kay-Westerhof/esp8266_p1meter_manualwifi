@@ -1,6 +1,6 @@
 # esp8266_p1meter
 
-Software for the ESP2866 that sends P1 smart meter data to an mqtt broker (with OTA firmware updates)
+Software for the ESP2866 that sends P1 smart meter data to an mqtt broker (with OTA firmware updates). Only use this fork if you need the ability to make the ESP use one specific access point, otherwise use the [original](https://github.com/daniel-jong/esp8266_p1meter).
 
 ## Setup wifi settings
 To specify which access point you want to use, change the bssid in settings.h to the bssid of your access point. Make sure USE_SPECIFIC_BSSID is set to true, otherwise the setting will not have any effect. 
